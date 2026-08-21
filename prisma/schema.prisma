@@ -11,3 +11,81 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+enum Role {
+  CUSTOMER
+  VENUE_MANAGER
+}
+
+enum EventStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+
+  votes     Vote[]
+  venues    VenueManager[]
+  events    Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Venue {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String?
+
+  managers  VenueManager[]
+  events    Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VenueManager {
+  id        Int  @id @default(autoincrement())
+  userId    Int
+  venueId   Int
+
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  venue     Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, venueId])
+}
+
+model Event {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  proposedAt  DateTime
+  status      EventStatus @default(PENDING)
+
+  creatorId   Int
+  venueId     Int
+
+  creator     User        @relation(fields: [creatorId], references: [id])
+  venue       Venue       @relation(fields: [venueId], references: [id])
+  votes       Vote[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Vote {
+  id        Int @id @default(autoincrement())
+  userId    Int
+  eventId   Int
+
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+}
