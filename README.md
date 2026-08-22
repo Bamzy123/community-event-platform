@@ -100,8 +100,31 @@ The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
 ---
 
+## Railway Deployment Instructions
+
+1. **Environment Variables**: Configure the following environment variables in your Railway project settings:
+   - `PORT`: Railway automatically sets this (defaults to `3000` locally).
+   - `DATABASE_URL`: Set to `"file:./dev.db"` (or a volume-mounted SQLite path for persistent storage).
+   - `JWT_SECRET`: Secret key for JWT signing (e.g. `your-super-secret-jwt-key`).
+   - `JWT_EXPIRES_IN`: JWT expiration duration (e.g. `7d`).
+
+2. **Build & Start Commands**:
+   - **Build Command**: `npm run build` (runs `prisma generate && tsc`).
+   - **Start Command**: `npm run start` (runs `tsx src/index.ts`).
+
+---
+
+## Refactored Architecture & DRY Utilities
+
+- **`asyncHandler` Wrapper (`src/utils/async-handler.ts`)**: Eliminates redundant `try/catch` blocks across all controller methods and routes unhandled exceptions directly to Express's global error handler.
+- **`parseNumericId` Helper (`src/utils/helpers.ts`)**: Unified helper for parsing, sanitizing, and validating URL parameter IDs.
+- **`formatUserDto` Helper (`src/utils/helpers.ts`)**: Standardized User DTO serialization across authentication endpoints (`signup`, `login`, `me`).
+
+---
+
 ## AI Assistance Attribution
 
 In accordance with the challenge AI policy, AI tools (Antigravity IDE / Gemini 3.6 Flash) assisted in:
 - Generating initial boilerplate configurations for Prisma 7 SQLite driver adapters.
 - Authoring the automated API test runner script (`src/tests/api.test.ts`).
+- Code refactoring, DRY utility extraction, and deployment optimization.
