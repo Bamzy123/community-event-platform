@@ -2,9 +2,9 @@
   "name": "community-event-platform",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "node dist/src/index.js",
     "dev": "tsx watch src/index.ts",
     "build": "prisma generate && tsc",
     "seed": "tsx src/seed.ts",
