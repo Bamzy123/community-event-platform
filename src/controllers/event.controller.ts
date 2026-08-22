@@ -2,7 +2,7 @@ import { Response } from "express";
 import { prisma } from "../lib/prisma";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { asyncHandler } from "../utils/async-handler";
-import { parseNumericId } from "../utils/helpers";
+import { parseNumericId, formatDate } from "../utils/helpers";
 
 export const createEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   if (!req.user) {
@@ -27,7 +27,14 @@ export const createEvent = asyncHandler(async (req: AuthenticatedRequest, res: R
     return;
   }
 
-  const proposedDate = new Date(proposedAt);
+  let proposedDate: Date;
+  if (typeof proposedAt === "string" && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(proposedAt.trim())) {
+    const [day, month, year] = proposedAt.trim().split("/").map(Number);
+    proposedDate = new Date(year, month - 1, day);
+  } else {
+    proposedDate = new Date(proposedAt);
+  }
+
   if (isNaN(proposedDate.getTime())) {
     res.status(400).json({ error: "Invalid proposed date/time format." });
     return;
@@ -67,12 +74,12 @@ export const createEvent = asyncHandler(async (req: AuthenticatedRequest, res: R
       id: newEvent.id,
       title: newEvent.title,
       description: newEvent.description,
-      proposedAt: newEvent.proposedAt,
+      proposedAt: formatDate(newEvent.proposedAt),
       status: newEvent.status,
       venue: newEvent.venue,
       creator: newEvent.creator,
       voteCount: newEvent._count.votes,
-      createdAt: newEvent.createdAt
+      createdAt: formatDate(newEvent.createdAt)
     }
   });
 });
@@ -106,13 +113,13 @@ export const listEvents = asyncHandler(async (req: AuthenticatedRequest, res: Re
       id: event.id,
       title: event.title,
       description: event.description,
-      proposedAt: event.proposedAt,
+      proposedAt: formatDate(event.proposedAt),
       status: event.status,
       venue: event.venue,
       creator: event.creator,
       voteCount: event._count.votes,
       hasUpvoted: userId ? Array.isArray(event.votes) && event.votes.length > 0 : false,
-      createdAt: event.createdAt
+      createdAt: formatDate(event.createdAt)
     }))
   });
 });

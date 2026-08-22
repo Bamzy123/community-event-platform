@@ -2,7 +2,7 @@ import { Response } from "express";
 import { prisma } from "../lib/prisma";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { asyncHandler } from "../utils/async-handler";
-import { parseNumericId } from "../utils/helpers";
+import { parseNumericId, formatDate } from "../utils/helpers";
 
 export const getApprovalQueue = asyncHandler(async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   if (!req.user) {
@@ -45,12 +45,12 @@ export const getApprovalQueue = asyncHandler(async (req: AuthenticatedRequest, r
       id: event.id,
       title: event.title,
       description: event.description,
-      proposedAt: event.proposedAt,
+      proposedAt: formatDate(event.proposedAt),
       status: event.status,
       venue: event.venue,
       creator: event.creator,
       voteCount: event._count.votes,
-      createdAt: event.createdAt
+      createdAt: formatDate(event.createdAt)
     }))
   });
 });
@@ -115,12 +115,12 @@ export const updateEventStatus = asyncHandler(async (req: AuthenticatedRequest, 
       id: updatedEvent.id,
       title: updatedEvent.title,
       description: updatedEvent.description,
-      proposedAt: updatedEvent.proposedAt,
+      proposedAt: formatDate(updatedEvent.proposedAt),
       status: updatedEvent.status,
       venue: updatedEvent.venue,
       creator: updatedEvent.creator,
       voteCount: updatedEvent._count.votes,
-      updatedAt: updatedEvent.updatedAt
+      updatedAt: formatDate(updatedEvent.updatedAt)
     }
   });
 });

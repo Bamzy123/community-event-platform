@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { asyncHandler } from "../utils/async-handler";
-import { parseNumericId } from "../utils/helpers";
+import { parseNumericId, formatDate } from "../utils/helpers";
 
 export const listVenues = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const venues = await prisma.venue.findMany({
@@ -71,7 +71,7 @@ export const getVenueById = asyncHandler(async (req: Request, res: Response): Pr
         id: e.id,
         title: e.title,
         description: e.description,
-        proposedAt: e.proposedAt,
+        proposedAt: formatDate(e.proposedAt),
         status: e.status,
         voteCount: e._count.votes
       })),

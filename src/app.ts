@@ -6,6 +6,8 @@ import venueRoutes from "./routes/venue.routes";
 import eventRoutes from "./routes/event.routes";
 import managerRoutes from "./routes/manager.routes";
 
+import { formatDate } from "./utils/helpers";
+
 const app = express();
 
 app.use(cors());
@@ -13,7 +15,7 @@ app.use(express.json());
 
 // API Health Check
 app.get("/api/health", (req: Request, res: Response) => {
-  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+  res.status(200).json({ status: "ok", timestamp: formatDate(new Date()) });
 });
 
 // Mount API routes

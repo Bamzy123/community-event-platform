@@ -285,6 +285,6 @@ This guide contains step-by-step instructions, request URLs, HTTP methods, heade
   ```json
   {
     "status": "ok",
-    "timestamp": "2026-08-22T08:14:00.000Z"
+    "timestamp": "22/08/2026"
   }
   ```

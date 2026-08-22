@@ -6,6 +6,16 @@ export function parseNumericId(param: string | string[] | undefined): number | n
   return isNaN(num) || num <= 0 ? null : num;
 }
 
+export function formatDate(date: Date | string | null | undefined): string {
+  if (!date) return "";
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return String(date);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 export function formatUserDto(user: {
   id: number;
   name: string;
@@ -21,3 +31,4 @@ export function formatUserDto(user: {
     managedVenues: user.venues ? user.venues.map((v) => v.venue) : []
   };
 }
+
