@@ -6,7 +6,7 @@ Customers can suggest events, browse event suggestions, upvote suggestions, and 
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### Prerequisites
 - Node.js (v18+)
@@ -32,7 +32,7 @@ API Server endpoints will be available at [http://localhost:3000/api](http://loc
 
 ---
 
-## 🔌 REST API Endpoints Overview
+## REST API Endpoints Overview
 
 ### Authentication
 - `POST /api/auth/signup`: Register a new user (`CUSTOMER` or `VENUE_MANAGER`).
@@ -54,7 +54,7 @@ API Server endpoints will be available at [http://localhost:3000/api](http://loc
 
 ---
 
-## 🔑 Pre-seeded Test Accounts
+## Pre-seeded Test Accounts
 
 The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
@@ -68,7 +68,7 @@ The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
 ---
 
-## 🏗️ Architecture & Data Model
+## Architecture & Data Model
 
 ### Stack Overview
 - **Backend Framework**: Node.js + Express + TypeScript
@@ -84,7 +84,7 @@ The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
 ---
 
-## 🔒 Security & Role-Based Authorization
+## Security & Role-Based Authorization
 
 1. **Server-Side Authorization**: All manager actions (`GET /api/manager/queue`, `PATCH /api/manager/events/:id/status`) enforce strict role checking (`requireRole('VENUE_MANAGER')`).
 2. **Venue Manager Scoping**: When a Venue Manager requests their queue, only events for venues explicitly linked to them in `VenueManager` are returned. When approving/rejecting an event, the backend verifies that the manager owns the target venue and rejects unauthorized attempts with `403 Forbidden`.
@@ -92,7 +92,7 @@ The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
 ---
 
-## ⚖️ Tradeoffs & Future Roadmap
+## Tradeoffs & Future Roadmap
 
 ### Decisions & Assumptions
 - **Automatic Queue Submission**: Event suggestions automatically enter the target venue manager's queue upon creation with status `PENDING`.
@@ -100,7 +100,7 @@ The seed script (`npm run seed`) creates pre-configured accounts for testing:
 
 ---
 
-## 🤖 AI Assistance Attribution
+## AI Assistance Attribution
 
 In accordance with the challenge AI policy, AI tools (Antigravity IDE / Gemini 3.6 Flash) assisted in:
 - Generating initial boilerplate configurations for Prisma 7 SQLite driver adapters.
