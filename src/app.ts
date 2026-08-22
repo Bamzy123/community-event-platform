@@ -8,9 +8,26 @@ import managerRoutes from "./routes/manager.routes";
 
 import { formatDate } from "./utils/helpers";
 
+const ALLOWED_ORIGINS = [
+  "https://community-event-platform-frontend.onrender.com",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:4000"
+];
+
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., Postman, curl, server-to-server)
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy: Origin '${origin}' is not allowed.`));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // API Health Check
